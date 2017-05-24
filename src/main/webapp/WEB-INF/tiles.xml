@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+	   "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+	   "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- 页面模板 -->
+	<definition name="main" template="/WEB-INF/backstage/frame/main.jsp"></definition>
+	<definition name="table" template="/WEB-INF/backstage/frame/table.jsp"></definition>
+	<definition name="form" template="/WEB-INF/backstage/frame/form.jsp"></definition>
+	
+	<definition name="index" extends="main">
+		<put-attribute name="meta" value="/WEB-INF/backstage/meta.jsp" />
+		<put-attribute name="source" value="/WEB-INF/backstage/source/source-index.jsp" />
+		<put-attribute name="head" value="/WEB-INF/backstage/head.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/backstage/menu.jsp" />
+		<put-attribute name="content" value="/WEB-INF/backstage/main/index.jsp" />
+		<put-attribute name="foot" value="/WEB-INF/backstage/foot.jsp" />
+	</definition>
+	
+	<definition name="*/*" extends="form">
+		<put-attribute name="meta" value="/WEB-INF/backstage/meta.jsp" />
+		<put-attribute name="source" value="/WEB-INF/backstage/source/source-form.jsp" />
+		<put-attribute name="head" value="/WEB-INF/backstage/head.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/backstage/menu.jsp" />
+		<put-attribute name="content" value="/WEB-INF/backstage/{1}/{2}.jsp" />
+		<put-attribute name="foot" value="/WEB-INF/backstage/foot.jsp" />
+	</definition>
+	
+	<definition name="*/*/*" extends="table">
+		<put-attribute name="meta" value="/WEB-INF/backstage/meta.jsp" />
+		<put-attribute name="source" value="/WEB-INF/backstage/source/source-table.jsp" />
+		<put-attribute name="head" value="/WEB-INF/backstage/head.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/backstage/menu.jsp" />
+		<put-attribute name="content" value="/WEB-INF/backstage/{1}/{2}.jsp" />
+		<put-attribute name="foot" value="/WEB-INF/backstage/foot.jsp" />
+	</definition>
+	
+</tiles-definitions>

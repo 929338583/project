@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkey.common.dao.RolePermissionDao">
+  <resultMap id="BaseResultMap" type="com.monkey.common.bean.RolePermission">
+    <constructor>
+      <arg column="rid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="pid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    rid, pid
+  </sql>
+  
+  <delete id="delete" parameterType="com.monkey.common.bean.RolePermission">
+    delete from bs_role_permission
+    where rid = #{rid,jdbcType=INTEGER} and pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.monkey.common.bean.RolePermission">
+    insert into bs_role_permission (rid, pid)
+    values (#{rid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
+  </insert>
+</mapper>

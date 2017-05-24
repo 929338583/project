@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans      
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd      
+                        http://www.springframework.org/schema/context      
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                        http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-4.0.xsd     
+                        http://www.springframework.org/schema/mvc      
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- 添加注解驱动 -->
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+
+	<!-- 主要是用来定义对静态资源的访问 -->
+	<mvc:resources mapping="*/static/*" location="/static/" />
+
+	<!-- 设置使用注解的类所在的包 -->
+	<context:component-scan base-package="com.monkey.common.action" />
+	<context:component-scan base-package="com.monkey.common.http" />
+
+	<!-- 开启aop对类代理 -->
+	<aop:config proxy-target-class="true"/>
+	<!-- 开启shiro注解支持 -->
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	<!-- 定义跳转的文件的前后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/backstage/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="2" />
+	</bean>
+	<!-- json  -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<!-- tiles视图解析  -->
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="order" value="1" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
+	</bean>
+
+	<!-- 异常处理 -->
+	<bean id="exceptionResolver" class="com.monkey.common.exception.ExceptionHandler" />
+
+	<!-- 校验 -->
+	<mvc:annotation-driven validator="validator" />
+
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+
+	<!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找 -->
+			<list>
+				<value>classpath:message</value>
+			</list>
+		</property>
+		<property name="useCodeAsDefaultMessage" value="false" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="cacheSeconds" value="60" />
+	</bean>
+
+
+</beans>

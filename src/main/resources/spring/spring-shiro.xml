@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans      
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd      
+                        http://www.springframework.org/schema/context      
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- shiro过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<!-- 登录地址 -->
+		<property name="loginUrl" value="/backstage/login" />
+		<!-- 登录成功请求地址 -->
+		<property name="successUrl" value="/backstage/main/index" />
+		<!-- 配置权限 -->
+		<property name="filterChainDefinitions">
+			<value>
+				<!-- 静态资源匿名访问 -->
+				/static/** = anon
+				<!-- 退出shiro清除session -->
+				/logout = logout
+				<!-- 需要认证才能访问 -->
+				/main/**=authc
+				/user/**=authc
+				/role/**=authc
+				/organ/**=authc
+				/permission/**=authc
+			</value>
+		</property>
+	</bean>
+
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="securityRealm" />
+	</bean>
+
+	<!-- 自定义realm -->
+	<bean id="securityRealm" class="com.monkey.common.security.SecurityRealm">
+		<!-- 凭证匹配器设置到realm中 -->
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+	</bean>
+
+	<!-- 凭证匹配器 -->
+	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<property name="hashAlgorithmName" value="md5" />
+		<property name="hashIterations" value="2" />
+	</bean>
+</beans>

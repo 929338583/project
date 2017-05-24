@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.monkey.common.dao.UserRoleDao">
+
+  <resultMap id="UserRoleResultMap" type="com.monkey.common.bean.UserRole">
+    <constructor>
+      <arg column="uid" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="rid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  
+  <sql id="UserRole_Column_List">
+    uid, rid
+  </sql>
+  
+  <!-- 查询用户 -->
+  <select id="selectRids" resultType="java.lang.Integer" parameterType="java.lang.Long">
+		select
+			rid
+		from bs_user_role
+			where uid = #{uid,jdbcType=INTEGER}
+  </select>
+	
+  <delete id="delete" parameterType="com.monkey.common.bean.UserRole">
+    delete from bs_user_role
+    where uid = #{uid,jdbcType=BIGINT} and rid=#{uid,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+	    insert into bs_user_role (uid, rid)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    	(#{item.uid,jdbcType=BIGINT}, #{item.rid,jdbcType=INTEGER})
+	    </foreach>
+  </insert>
+  
+</mapper>

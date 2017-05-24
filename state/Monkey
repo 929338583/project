@@ -1,0 +1,14 @@
+## first deploy:tomcat7:deploy
+## after deploy:tomcat7:redeploy
+
+1、maven 管理jar
+2、mybatis generator生成dao接口与mapper文件
+3、SpringMVC统一异常处理
+4、SpringMVC声明式事务管理
+5、SpringMVC验证器
+6、Apache Tiles布局
+7、PageHelper对使用Mybatis查询进行物理分页
+8、Shiro安全框架
+9、Spring注入、切面、事务管理
+10、Bootstrap前端框架
+11、Ehcahe缓存
